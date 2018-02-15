@@ -300,6 +300,8 @@ metadata:
   name: alertmanager
   namespace: monitoring
 spec:
+  nodeSelector:
+    workload: monitoring
   replicas: 1
   selector:
     matchLabels:
@@ -365,6 +367,8 @@ metadata:
     app: grafana
     component: core
 spec:
+  nodeSelector:
+    workload: monitoring
   replicas: 1
   template:
     metadata:
@@ -380,11 +384,11 @@ spec:
         resources:
           # keep request = limit to keep this container in guaranteed class
           limits:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 1000m
+            memory: 1Gi
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 1000m
+            memory: 1Gi
         env:
           # The following env variables set up basic auth twith the default admin user and admin password.
           - name: GF_AUTH_BASIC_ENABLED
@@ -2470,6 +2474,8 @@ metadata:
     app: prometheus
     component: core
 spec:
+  nodeSelector:
+    workload: monitoring
   replicas: 1
   template:
     metadata:
@@ -2492,11 +2498,11 @@ spec:
           containerPort: 9090
         resources:
           requests:
-            cpu: 500m
-            memory: 500M
+            cpu: 8000m
+            memory: 32Gi
           limits:
-            cpu: 500m
-            memory: 500M
+            cpu: 8000m
+            memory: 32Gi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/prometheus
@@ -2516,6 +2522,8 @@ metadata:
   name: kube-state-metrics
   namespace: monitoring
 spec:
+  nodeSelector:
+    workload: monitoring
   replicas: 2
   template:
     metadata:
